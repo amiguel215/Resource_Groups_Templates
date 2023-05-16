@@ -1,0 +1,98 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountName":{
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24
+        },
+        "storageSku": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS"
+            ]
+        },
+        "appServicePlanName":{
+            "type": "string"
+        },
+        "appService1Name":{
+            "type": "string"
+        },
+        "appService2Name": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]"
+        }
+    },
+
+    "functions": [],
+
+    "variables": {
+        "skuName": "F1",
+        "skuCapacity": 1
+    },
+    "resources": [
+        {
+            "name": "[parameters('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-02-01",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('storageSku')]",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties":{}
+        },
+        {
+            "name":"[parameters('appServicePlanName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2021-02-01",
+            "location":"[parameters('location')]",
+            "sku":{
+                "name":"[variables('skuName')]",
+                "capacity":"[variables('skuCapacity')]"
+            },
+            "properties":{}
+        },
+        {
+            "name": "[parameters('appService1Name')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-02-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+            }
+        },
+       {
+            "name": "[parameters('appService2Name')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-02-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+            }
+        }
+
+    ],
+
+    "outputs": {
+        "appServicePlanResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+        }
+    }
+}
+
+
