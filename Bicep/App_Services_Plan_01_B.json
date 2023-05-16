@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "appServicePlanName": {
+        "value": "prueba-01-bicep"
+      },
+      "appService1Name": {
+        "value": "my-prueba-web-1"
+      },
+      "appService2Name": {
+        "value": "my-prueba-web-2"
+      },
+      "storageAccountName": {
+        "value": "mystorageaccount01b"
+      },
+      "containerName": {
+        "value": "mycontainerbicep"
+      },
+      "location": {
+        "value": "eastus"
+      }
+    }
+  }
