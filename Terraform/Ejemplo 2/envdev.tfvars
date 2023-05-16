@@ -1,0 +1,6 @@
+resource_group_name      = "examp2"
+location                 = "West Europe"
+storageaccountname       = "devappfg28teststorage"
+account_tier             = "Standard"
+account_replication_type = "LRS"
+environment              = "dev"
